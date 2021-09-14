@@ -1,14 +1,20 @@
 import React from 'react'
 import { ContainerCard, ContainerDescription, TextGray, TitleItem } from './style'
 
-export function CardItem({}) {
+interface CardItemProps {
+  name: string;
+  qnt: number;
+  valueQnt: string;
+}
+
+export function CardItem({name, qnt, valueQnt}: CardItemProps) {
   return (
     <ContainerCard>
-      <TitleItem>Cerveja Skol long</TitleItem>
+      <TitleItem>{name}</TitleItem>
 
       <ContainerDescription>
-        <TextGray>Unid: 3</TextGray>
-        <TextGray>R$ 4,67/ unid</TextGray>
+        <TextGray>Unid: {qnt}</TextGray>
+        <TextGray>{valueQnt}/ unid</TextGray>
       </ContainerDescription>
       
     </ContainerCard>

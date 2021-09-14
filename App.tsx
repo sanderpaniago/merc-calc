@@ -7,6 +7,7 @@ import {
 import { useFonts } from 'expo-font'
 
 import Routes from './src/routes';
+import { ShopListProvider } from './src/context/ShopListContext';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -19,6 +20,8 @@ export default function App() {
     return null
   }
   return (
+    <ShopListProvider>
       <Routes />
+    </ShopListProvider>
   );
 }
