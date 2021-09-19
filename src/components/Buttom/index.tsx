@@ -3,14 +3,19 @@ import { Button, TextButton } from './styled'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 type ButtonGreenProps = {
+  text?: string;
   onPress: () => void;
 }
 
-export function ButtonGreen({ onPress }: ButtonGreenProps) {
+export function ButtonGreen({ text, onPress }: ButtonGreenProps) {
   return (
     <Button onPress={onPress}>
       <Icon name="add-outline" size={24} color='#FFF' />
-      <TextButton>Adicionar novo item</TextButton>
+      {text ? (
+        <TextButton>{text}</TextButton>
+      ) : (
+        <TextButton>Adicionar novo item</TextButton>
+      )}
     </Button>
   )
 }

@@ -30,7 +30,7 @@ export const ContainerSummary = styled(View)`
 export const TitleSummary = styled(Text)`
   font-family: 'Poppins_500Medium';
   font-size: 20px;
-  color: #FFF;
+  color: #fff;
 `
 
 export const ContainerList = styled(View)`

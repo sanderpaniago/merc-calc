@@ -1,6 +1,6 @@
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ButtonGreen } from "../components/Buttom";
 import { useShopList } from "../context/ShopListContext";
@@ -8,17 +8,25 @@ import { RootStackParamList } from "../routes";
 import { Input } from "../style/create";
 import { Container } from "../style/main";
 
-type createdScreenProp = StackNavigationProp<RootStackParamList, 'Created'>
+type EditScreenProp = StackNavigationProp<RootStackParamList, 'Edit'>
 
-export default function Created() {
+type ShopItemParams = {
+  id: string
+}
 
-  const navigation = useNavigation<createdScreenProp>()
+export default function Edit() {
+  const navigation = useNavigation<EditScreenProp>()
 
-  const { newShopItem } = useShopList()
+  const route = useRoute()
 
-  const [name, setName] = useState('')
-  const [qnt, setQnt] = useState('')
-  const [valueQnt, setValueQnt] = useState('')
+  const { editShopItem, shopList } = useShopList()
+  const { id } = route.params as ShopItemParams;
+  
+  const currentShopList = shopList.filter(item => item.id === id)[0]
+
+  const [name, setName] = useState(currentShopList.name)
+  const [qnt, setQnt] = useState(String(currentShopList.qnt))
+  const [valueQnt, setValueQnt] = useState(String(currentShopList.valueQnt))
 
   function handleCreatedNewItem() {
 
@@ -32,13 +40,13 @@ export default function Created() {
     }
 
     const newItem = {
-      id: Math.floor(Date.now() * Math.random()).toString(36),
+      id: id,
       name,
       qnt: Number(qnt),
       valueQnt: formattedNumber(valueQnt),
       total: Number(qnt) * formattedNumber(valueQnt),
     }
-    newShopItem(newItem)
+    editShopItem(newItem)
 
     navigation.navigate('Main')
   }
@@ -67,7 +75,7 @@ export default function Created() {
           placeholderTextColor="#6D6D6D"
         />
 
-        <ButtonGreen onPress={() => handleCreatedNewItem()} />
+        <ButtonGreen text="Atualizar Item" onPress={() => handleCreatedNewItem()} />
       </SafeAreaView>
     </Container>
   )

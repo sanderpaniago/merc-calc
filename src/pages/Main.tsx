@@ -25,9 +25,13 @@ export default function Main() {
 
   const navigation = useNavigation<mainScreenProp>()
   const { shopList } = useShopList()
-  
+
   function handleToCreateItem() {
     navigation.navigate('Created')
+  }
+
+  function handleEditItem(id: string) {
+    navigation.navigate('Edit', { id })
   }
 
   function formatNumber() {
@@ -37,13 +41,14 @@ export default function Main() {
     })
   }
 
-  const totalShop = shopList?.reduce((acc,item) => {
+  const totalShop = shopList?.reduce((acc, item) => {
     return acc + item.total
   }, 0)
 
   const formatShopList = useMemo(() => {
     if (shopList) {
       return shopList.map(item => ({
+        id: item.id,
         name: item.name,
         qnt: item.qnt,
         valueQnt: item.valueQnt,
@@ -55,27 +60,29 @@ export default function Main() {
 
   return (
     <>
-    <Container>
-      <Title>Compra mês</Title>
-      <SubTitle>Agosto 2021</SubTitle>
+      <Container>
+        <Title>Compra mês</Title>
+        <SubTitle>Agosto 2021</SubTitle>
 
-      <ContainerSummary>
-        <TitleSummary>Valor da compra:</TitleSummary>
-        <SubTitle>{formatNumber().format(totalShop)}</SubTitle>
-      </ContainerSummary>
+        <ContainerSummary>
+          <TitleSummary>Valor da compra:</TitleSummary>
+          <SubTitle>{formatNumber().format(totalShop)}</SubTitle>
+        </ContainerSummary>
 
-      <ContainerList>
-
-        {formatShopList?.map(item => {
-          return (
-            <CardItem
-            name={item.name}
-            qnt={item.qnt}
-            valueQnt={item.valueFormat}
-            />
-          )
-        })}
-      </ContainerList>
+        <ContainerList>
+          {formatShopList?.map((item, index) => {
+            return (
+              <CardItem
+                key={item.id}
+                name={item.name}
+                qnt={item.qnt}
+                valueQnt={item.valueFormat}
+                id={item.id}
+                handleEditItem={() => handleEditItem(item.id)}
+              />
+            )
+          })}
+        </ContainerList>
       </Container>
       <ContainerButtonAdd>
         <ButtonGreen onPress={() => handleToCreateItem()} />
